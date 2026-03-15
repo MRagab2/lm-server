@@ -10,12 +10,12 @@ app.use(cors());
 
 // Routes 
 const authRouter      = require('./modules/auth/Auth.router');
-// const booksRouter     = require('./modules/books/books.router');
+const booksRouter     = require('./modules/books/Book.router');
 // const borrowersRouter = require('./modules/borrowers/borrowers.router');
 // const borrowingRouter = require('./modules/borrowing/borrowing.router');
 
 app.use('/api/auth',      authRouter);
-// app.use('/api/books',     booksRouter);
+app.use('/api/books',     booksRouter);
 // app.use('/api/borrowers', borrowersRouter);
 // app.use('/api/borrowing', borrowingRouter);
 
