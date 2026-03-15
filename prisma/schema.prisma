@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  @@index([email])
+}
+
+// Book
+model Book {
+  id                Int      @id @default(autoincrement())
+  title             String
+  author            String
+  isbn              String   @unique
+  availableQuantity Int      @default(0)
+  shelfLocation     String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  deletedAt         DateTime?
+
+  borrowingRecords BorrowingRecord[]
+
+  @@index([title])
+  @@index([author])
+  @@index([isbn])
+}
+
+// Borrower
+model Borrower {
+  id             Int      @id @default(autoincrement())
+  name           String
+  email          String   @unique
+  registeredDate DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  deletedAt      DateTime?
+
+  borrowingRecords BorrowingRecord[]
+
+  @@index([email])
+}
+
+// BorrowingRecord
+model BorrowingRecord {
+  id           Int       @id @default(autoincrement())
+  borrowerId   Int
+  bookId       Int
+  checkedOutAt DateTime  @default(now())
+  dueDate      DateTime
+  returnedAt   DateTime?
+  deletedAt    DateTime?
+
+  borrower Borrower @relation(fields: [borrowerId], references: [id], onDelete: Cascade)
+  book     Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([borrowerId])
+  @@index([bookId])
+  @@index([dueDate])
+  @@index([returnedAt])
+}
