@@ -5,7 +5,7 @@ const createBorrowerValidation = [
   body("email")
     .trim()
     .isEmail().withMessage("Valid email is required")
-    .normalizeEmail(),
+    .toLowerCase(),
 ];
 
 const updateBorrowerValidation = [
@@ -18,7 +18,7 @@ const updateBorrowerValidation = [
     .optional()
     .trim()
     .isEmail().withMessage("Valid email is required")
-    .normalizeEmail(),
+    .toLowerCase(),
 ];
 
 module.exports = { createBorrowerValidation, updateBorrowerValidation };

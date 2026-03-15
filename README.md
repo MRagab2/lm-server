@@ -104,7 +104,19 @@ Authorization: Bearer <token>
 Get a token by logging in via `POST /api/auth/login`.
 
 ---
-
+ 
+## Postman Collection
+ 
+Import `postman_collection.json` into Postman to test all endpoints instantly.
+ 
+1. Open Postman
+2. Click **Import** → select `postman_collection.json`
+3. Set the `base_url` environment variable to `http://localhost:3000`
+4. Run **Login** first — the token is saved automatically to `{{Token}}`
+5. All protected requests use `{{Token}}` automatically
+ 
+---
+ 
 ## API Endpoints
 
 ### Auth
