@@ -1,12 +1,19 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const helmet  = require('helmet');
+const hpp                = require('hpp');
+const { generalLimiter } = require('./middlewares/rateLimiter.middleware');
 const app = express();
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(helmet());
+app.use(generalLimiter);
+// Middleware
+app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+app.use(hpp());
 
 // Routes 
 const authRouter      = require('./modules/auth/auth.router');

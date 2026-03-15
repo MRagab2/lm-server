@@ -12,13 +12,13 @@ router.get("/:id",    booksController.getBookById);
 router.post(
   "/",
   authMiddleware,
-  createBookValidation,
+  ...createBookValidation,
   booksController.createBook,
 );
 router.put(
   "/:id",
   authMiddleware,
-  updateBookValidation,
+  ...updateBookValidation,
   booksController.updateBook,
 );
 router.delete("/:id", authMiddleware, booksController.deleteBook);

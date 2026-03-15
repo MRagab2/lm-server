@@ -1,23 +1,24 @@
 const { body } = require("express-validator");
 
 const createBorrowerValidation = [
-  body('name')
+  body("name").trim().escape().notEmpty().withMessage("Name is required"),
+  body("email")
     .trim()
-    .notEmpty().withMessage('Name is required'),
-  body('email')
-    .trim()
-    .isEmail().withMessage('Valid email is required'),
+    .isEmail().withMessage("Valid email is required")
+    .normalizeEmail(),
 ];
 
 const updateBorrowerValidation = [
-  body('name')
+  body("name")
     .optional()
     .trim()
-    .notEmpty().withMessage('Name cannot be empty'),
-  body('email')
+    .escape()
+    .notEmpty().withMessage("Name cannot be empty"),
+  body("email")
     .optional()
     .trim()
-    .isEmail().withMessage('Valid email is required'),
+    .isEmail().withMessage("Valid email is required")
+    .normalizeEmail(),
 ];
 
 module.exports = { createBorrowerValidation, updateBorrowerValidation };

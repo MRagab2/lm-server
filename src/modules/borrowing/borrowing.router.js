@@ -7,19 +7,19 @@ const router = express.Router();
 router.post(
   "/checkout",
   authMiddleware,
-  checkoutValidation,
+  ...checkoutValidation,
   borrowingController.checkoutBook,
 );
 router.put(
   "/return/:id",
   authMiddleware,
-  returnValidation,
+  ...returnValidation,
   borrowingController.returnBook,
 );
 router.get(
   "/borrower/:borrowerId",
   authMiddleware,
-  borrowerIdValidation,
+  ...borrowerIdValidation,
   borrowingController.getBorrowerActiveBooks,
 );
 router.get("/overdue", authMiddleware, borrowingController.getOverdueBooks);

@@ -1,4 +1,4 @@
-# Library Management System
+# Library Management System — Bosta Assessment
 
 A RESTful API for managing books, borrowers, and borrowing processes built with Node.js, Express, Prisma, and PostgreSQL.
 
@@ -39,6 +39,8 @@ lm-server/
 │       ├── errors.js         # AppError class
 │       ├── prisma.js         # Prisma client instance
 │       └── response.js       # sendSuccess / sendError helpers
+├── tests/
+│   └── borrowing.service.test.js
 ├── .env.example
 ├── package.json
 └── prisma.config.ts
@@ -338,4 +340,84 @@ Borrower
 BorrowingRecord
   id, borrowerId (FK), bookId (FK), checkedOutAt, dueDate,
   returnedAt (nullable), deletedAt
+```
+
+---
+
+## Running Tests
+
+```bash
+npm test
+```
+
+---
+
+## Security
+
+This project implements multiple layers of security to protect against common threats:
+
+### 1. SQL Injection Prevention
+Prisma ORM uses **parameterized queries** automatically — user input is never concatenated into SQL strings directly. All database queries are sent as separate parameters, making SQL injection impossible.
+
+```
+// Attacker input
+email = "ahmed@test.com' OR '1'='1"
+
+// What Prisma sends to PostgreSQL
+Query:  SELECT * FROM "User" WHERE email = $1
+Params: ["ahmed@test.com' OR '1'='1"]  ← treated as plain text, never executed as SQL
+```
+
+### 2. Password Hashing
+Passwords are hashed using `bcryptjs` with 10 salt rounds before being stored. Plain text passwords are never saved to the database.
+
+### 3. JWT Authentication
+All write endpoints are protected with JWT tokens. Tokens expire after 7 days and are verified on every protected request.
+
+### 4. Input Validation & Sanitization
+Every endpoint uses `express-validator` to:
+- Validate input types and formats
+- Sanitize strings with `.escape()` to prevent XSS attacks
+- Strip whitespace with `.trim()`
+
+```
+// Attacker input
+"<script>alert('hacked')</script>"
+
+// After .escape()
+"&lt;script&gt;alert(&#x27;hacked&#x27;)&lt;&#x2F;script&gt;"
+```
+
+### 5. Security HTTP Headers (`helmet`)
+`helmet` automatically sets 15+ security headers on every response:
+
+| Header | Protects Against |
+|---|---|
+| `X-Content-Type-Options` | MIME type sniffing |
+| `X-Frame-Options` | Clickjacking |
+| `Strict-Transport-Security` | Forces HTTPS |
+| `Content-Security-Policy` | Script injection |
+
+### 6. Rate Limiting (`express-rate-limit`)
+Two layers of rate limiting to prevent abuse and brute force attacks:
+
+| Limiter | Routes | Limit |
+|---|---|---|
+| General | All routes | 100 requests / 15 min |
+| Auth | `/api/auth/login` and `/api/auth/register` | 10 requests / 15 min |
+
+### 7. Request Body Size Limit
+Request bodies are limited to `10kb` to prevent large payload / DoS attacks:
+```javascript
+app.use(express.json({ limit: '10kb' }));
+```
+
+### 8. HTTP Parameter Pollution Prevention (`hpp`)
+`hpp` prevents attackers from sending duplicate query parameters that could confuse the application:
+```
+// Without hpp
+GET /api/books?q=harry&q=<script> → req.query.q = ["harry", "<script>"]
+
+// With hpp
+GET /api/books?q=harry&q=<script> → req.query.q = "harry"
 ```

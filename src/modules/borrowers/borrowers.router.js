@@ -9,8 +9,8 @@ router.get('/',     borrowersController.getAllBorrowers);
 router.get('/:id',  borrowersController.getBorrowerById);
 
 //  Protected routes 
-router.post('/',    authMiddleware, createBorrowerValidation, borrowersController.createBorrower);
-router.put('/:id',  authMiddleware, updateBorrowerValidation, borrowersController.updateBorrower);
+router.post('/',    authMiddleware, ...createBorrowerValidation, borrowersController.createBorrower);
+router.put('/:id',  authMiddleware, ...updateBorrowerValidation, borrowersController.updateBorrower);
 router.delete('/:id', authMiddleware, borrowersController.deleteBorrower);
 
 module.exports = router;
