@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const booksService = require("./Book.service");
+const booksService = require("./books.service");
 const { sendSuccess, sendError } = require("../../utils/response");
 
 const getAllBooks = async (req, res) => {

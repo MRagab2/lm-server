@@ -1,5 +1,5 @@
 const { validationResult } = require("express-validator");
-const authService = require("./Auth.service");
+const authService = require("./auth.service");
 const { sendSuccess, sendError } = require("../../utils/response");
 
 // POST /api/auth/register
