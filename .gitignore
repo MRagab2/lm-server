@@ -1,3 +1,25 @@
+# Dependencies
 node_modules/
+
+# Environment variables — never commit this!
 .env
-/src/generated/prisma
+
+# Prisma generated client — regenerated via `npx prisma generate`
+src/generated/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/

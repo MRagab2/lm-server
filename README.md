@@ -39,8 +39,6 @@ lm-server/
 │       ├── errors.js         # AppError class
 │       ├── prisma.js         # Prisma client instance
 │       └── response.js       # sendSuccess / sendError helpers
-├── tests/
-│   └── borrowing.service.test.js
 ├── .env.example
 ├── package.json
 └── prisma.config.ts
@@ -340,14 +338,6 @@ Borrower
 BorrowingRecord
   id, borrowerId (FK), bookId (FK), checkedOutAt, dueDate,
   returnedAt (nullable), deletedAt
-```
-
----
-
-## Running Tests
-
-```bash
-npm test
 ```
 
 ---
