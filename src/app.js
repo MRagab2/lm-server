@@ -12,12 +12,12 @@ app.use(cors());
 const authRouter      = require('./modules/auth/auth.router');
 const booksRouter     = require('./modules/books/books.router');
 const borrowersRouter = require('./modules/borrowers/borrowers.router');
-// const borrowingRouter = require('./modules/borrowing/borrowing.router');
+const borrowingRouter = require('./modules/borrowing/borrowing.router');
 
 app.use('/api/auth',      authRouter);
 app.use('/api/books',     booksRouter);
 app.use('/api/borrowers', borrowersRouter);
-// app.use('/api/borrowing', borrowingRouter);
+app.use('/api/borrowing', borrowingRouter);
 
 // 404 Handler
 app.use((req, res) => {
